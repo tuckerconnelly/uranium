@@ -1,7 +1,7 @@
 {
-  "name": "nadium",
+  "name": "uranium",
   "version": "0.0.0",
-  "description": "Native Radium.",
+  "description": "Universal Radium.",
   "main": "src/index.js",
   "scripts": {
     "prebuild": "rimraf lib",
@@ -10,9 +10,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tuckerconnelly/nadium.git"
+    "url": "https://github.com/tuckerconnelly/uranium.git"
   },
-  "homepage": "https://github.com/tuckerconnelly/nadium.git",
+  "homepage": "https://github.com/tuckerconnelly/uranium.git",
   "keywords": [
     "react",
     "radium"
@@ -35,8 +35,8 @@
     "rimraf": "^2.5.0"
   },
   "peerDependencies": {
-    "react": "^0.14.7"
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
