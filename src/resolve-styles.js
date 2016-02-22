@@ -4,7 +4,7 @@ import Plugins from './plugins'
 
 let resolveStyles = component => component
 
-const _resolveChildren = (element, uranium) => {
+const _resolveChildren = (element, forceUpdate) => {
   const { children } = element.props
   let newChildren
 
@@ -13,19 +13,17 @@ const _resolveChildren = (element, uranium) => {
   } else if (typeof children === 'function') {
     newChildren = (...args) => {
       const result = children.apply(null, args)
-      if (React.isValidElement(result)) {
-        return resolveStyles(result, uranium)
-      }
-      return result
+      if (!React.isValidElement(result)) return result
+      return resolveStyles(result, forceUpdate)
     }
   } else if (React.Children.count(children) === 1 && children.type) {
     const onlyChild = React.Children.only(children)
-    newChildren = resolveStyles(onlyChild, uranium)
+    newChildren = resolveStyles(onlyChild, forceUpdate)
   } else {
     newChildren = React.Children.map(
       children,
       child => {
-        if (React.isValidElement(child)) return resolveStyles(child, uranium)
+        if (React.isValidElement(child)) return resolveStyles(child, forceUpdate)
         return child
       }
     )
@@ -34,14 +32,14 @@ const _resolveChildren = (element, uranium) => {
   return React.cloneElement(element, element.props, newChildren)
 }
 
-const _resolveProps = (element, uranium) => {
+const _resolveProps = (element, forceUpdate) => {
   const newProps = Object.keys(element.props).reduce(
     (resolvedProps, prop) => {
       if (prop === 'children') return resolvedProps
       if (!React.isValidElement(element.props[prop])) return resolvedProps
       return {
         ...resolvedProps,
-        prop: resolveStyles(element.props[prop], uranium),
+        prop: resolveStyles(element.props[prop], forceUpdate),
       }
     },
     { ...element.props }
@@ -50,7 +48,7 @@ const _resolveProps = (element, uranium) => {
   return React.cloneElement(element, newProps)
 }
 
-const _runPlugins = (element, uranium) => {
+const _runPlugins = (element, forceUpdate) => {
   if (
     !React.isValidElement(element) ||
     typeof element.type !== 'string' ||
@@ -60,22 +58,19 @@ const _runPlugins = (element, uranium) => {
   }
 
   return Plugins.reduce(
-    (element, plugin) => plugin(element, uranium),
+    (element, plugin) => plugin(element, forceUpdate),
     element
   )
 }
 
-resolveStyles = (element, uranium) => {
-  const reducers = [
+resolveStyles = (element, forceUpdate) =>
+  [
     _resolveChildren,
     _resolveProps,
     _runPlugins,
-  ]
-
-  return reducers.reduce(
-    (element, reducer) => reducer(element, uranium),
+  ].reduce(
+    (element, reducer) => reducer(element, forceUpdate),
     element
   )
-}
 
 export default resolveStyles

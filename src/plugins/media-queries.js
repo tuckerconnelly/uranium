@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default (element, uranium) => {
+const mqls = new Map
+
+export default (element, forceUpdate) => {
   const { props } = element
   const { style } = props
 
@@ -13,14 +15,14 @@ export default (element, uranium) => {
         }
       }
 
-      if (!uranium.mqls.get(property)) {
-        uranium.mqls.set(property, window.matchMedia(property.split('@media ')[1]))
-        uranium.mqls.get(property).addListener(() => {
-          uranium.forceUpdate()
+      if (!mqls.get(property)) {
+        mqls.set(property, window.matchMedia(property.split('@media ')[1]))
+        mqls.get(property).addListener(() => {
+          forceUpdate()
         })
       }
 
-      if (uranium.mqls.get(property).matches) {
+      if (mqls.get(property).matches) {
         return {
           ...styleAccumulator,
           ...style[property],

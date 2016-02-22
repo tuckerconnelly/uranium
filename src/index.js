@@ -16,31 +16,13 @@ export default component => {
     constructor(props) {
       super(props)
 
-      this.mqls = new Map()
       this.state = {
         _styles: {},
       }
     }
 
-    setStyleState(elementKey, stateKey, value) {
-      this.setState({
-        _styles: {
-          ...this.state._styles,
-          [elementKey]: {
-            ...this.state._styles.elementKey,
-            [stateKey]: value,
-          },
-        },
-      })
-    }
-
-    getStyleState(elementKey, stateKey) {
-      if (!this.state._styles[elementKey]) return undefined
-      return !this.state._styles[elementKey][stateKey]
-    }
-
     render() {
-      return resolveStyles(super.render(), this)
+      return resolveStyles(super.render(), this.forceUpdate.bind(this))
     }
   }
 
