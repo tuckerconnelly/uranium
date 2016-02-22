@@ -1,3 +1,4 @@
+import mergeArray from './merge-array'
 import mediaQueries from './media-queries'
 import interactions from './interactions'
 
@@ -13,6 +14,7 @@ import interactions from './interactions'
 // the Uranium-enhanced element to update
 
 export default [
+  mergeArray,
   mediaQueries,
   interactions,
 ]
