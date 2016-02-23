@@ -2,7 +2,11 @@ import { Component } from 'react'
 
 import resolveStyles from './resolve-styles'
 
-export default component => {
+const defaultConfig = {
+  universal: true,
+}
+
+const enhancer = (config, component) => {
   // Handle stateless functional components
   const ComposedComponent = (component.render || component.prototype.render) ?
     component :
@@ -22,9 +26,24 @@ export default component => {
     }
 
     render() {
-      return resolveStyles(super.render(), this.forceUpdate.bind(this))
+      return resolveStyles(super.render(), this.forceUpdate.bind(this), config)
     }
   }
 
+  /* eslint-disable prefer-template */
+  Uranium.displayName =
+    'Uranium(' +
+    (ComposedComponent.displayName || ComposedComponent.name || 'Component') +
+    ')'
+  /* eslint-enable prefer-template */
+
   return Uranium
+}
+
+// Support both Uranium(MyComponent) and Uranium({ config })(MyComponent)
+export default configOrComponent => {
+  if (typeof configOrComponent === 'function') return enhancer(defaultConfig, configOrComponent)
+
+  const newConfig = { ...defaultConfig, ...configOrComponent }
+  return enhancer.bind(null, newConfig)
 }

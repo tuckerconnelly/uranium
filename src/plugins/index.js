@@ -1,20 +1,26 @@
 import mergeArray from './merge-array'
 import mediaQueries from './media-queries'
 import interactions from './interactions'
+import supportedProperties from './supported-properties'
 
-// Each plugin is a function that accepts an element and a forceUpdate
-// function, and returns a *cloned, non-mutated* element with new
-// properties
+// Plugins follow this format:
 //
-// Normally a plugin transforms the style property and returns a new
-// element with a transformed style property
+// const myPlugin = (element, forceUpdate, config) {
+//   const { props } = element
+//   const newProps = { ...props }
+//   // Do stuff, transform styles, attach event listeners that forceUpdate()
+//   return React.cloneElement(element, newProps)
+// }
 //
-// If the plugin needs to change a style based on an event, it attaches
-// an event listener and calls forceUpdate in that listener, which forces
-// the Uranium-enhanced element to update
-
+// element: the element being processed
+// forceUpdate: forces the Uranium-enhanced element to re-evaluate styles
+// config: The config passed to Uranium
+//
+// See merge-array for a simple example, and media-queries for a
+// simple example using event listeners
 export default [
   mergeArray,
+  supportedProperties,
   mediaQueries,
   interactions,
 ]
