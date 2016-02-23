@@ -28,9 +28,9 @@ const _supportedProperties = [
 
   // Border
   'border', // TODO Polyfill
-  'borderWidth',
+  'borderWidth', // TODO Polyfill
   'borderColor',
-  'borderTop',
+  'borderTop', // TODO Polyfill
   'borderTopWidth',
   'borderTopColor',
   'borderRight',
@@ -42,7 +42,7 @@ const _supportedProperties = [
   'borderLeft',
   'borderLeftWidth',
   'borderLeftColor',
-  'borderRadius',
+  'borderRadius', // TODO POlyfill
   'borderTopLeftRadius',
   'borderTopRightRadius',
   'borderBottomRightRadius',
@@ -60,7 +60,7 @@ const _supportedProperties = [
 
   // Text
   'color',
-  'font',
+  'font', // TODO Polyfill
   'fontFamily',
   'fontSize',
   'fontStyle',
@@ -107,6 +107,8 @@ const _supportedProperties = [
 
 const _testsForWarnings = [
   {
+    // Unsupported properties
+
     // In _supportedProperties
     propertyMatches: property => {
       for (const supportedProperty of _supportedProperties) {
@@ -136,23 +138,34 @@ const _testsForWarnings = [
   },
   // display: 'inline-block'
   {
+    propertyMatches: property => property === 'display',
     valueMatches: value => value === 'inline-block',
     message: () =>
       `To get the same effect as display: 'inline-block', use ` +
       `flexWrap: 'wrap' and flexDirection: 'row' on the parent.`,
   },
+  // display other than 'flex' or 'inline-block'
+  {
+    propertyMatches: property => property === 'display',
+    valueMatches: value => value !== 'inline-block' && value !== 'flex',
+    message: () =>
+      `The only display React Native supports is 'flex', so in Uranium ` +
+      `display: 'flex' is automatically added to all elements.`,
+  },
   // boxSizing
   {
     propertyMatches: property => property === 'boxSizing',
     message: () =>
-      `React Native doesn't support boxSizing, so Uranium can't support it. ` +
-      `Ask for boxSizing on https://productpains.com/product/react-native/ :)`,
+      `React Native doesn't support 'boxSizing', so Uranium can't support it. ` +
+      `Ask for boxSizing on https://productpains.com/product/react-native/`,
   },
   // position other than 'absolute' or 'relative'
   {
     propertyMatches: property => property === 'position',
     valueMatches: value => value !== 'relative' && value !== 'absolute',
-    message: () =>
+    message: (property, value) =>
+      `Unsupported property value for 'position' on \n` +
+      `${property}: '${value}'\n` +
       `Only position: 'relative' and position: 'absolute' are ` +
       `supported.`,
   },
@@ -208,6 +221,30 @@ const _testsForWarnings = [
     message: () =>
       `'textShadowOffset', 'textShadowRadius', and 'textShadowColor' are polyfilled ` +
       `into 'textShadow', so just use 'textShadow' as you normally would in CSS.`,
+  },
+
+  // Values
+
+  // Only px
+  {
+    valueMatches: value =>
+      typeof value === 'string' &&
+      !isNaN(parseInt(value, 10)) &&
+      !value.match(/px/),
+    message: (property, value) =>
+      `Unsupported unit on \n` +
+      `${property}: '${value}'\n` +
+      `px is the only supported unit right now.`,
+  },
+  // %
+  {
+    valueMatches: value =>
+      typeof value === 'string' &&
+      !isNaN(parseInt(value, 10)) &&
+      value.match(/\%/),
+    message: () =>
+      `Use the 'flex' property to get the same effect as percentages. ` +
+      `For example, width: 80% could be achieved using flex: 0.8 .`,
   },
 ]
 
