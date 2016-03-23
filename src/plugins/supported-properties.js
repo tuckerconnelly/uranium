@@ -20,36 +20,35 @@ const _supportedProperties = [
   'justifyContent',
 
   // Padding
-  'padding', // TODO Polyfill
+  'paddingHorizontal',
+  'paddingVertical',
   'paddingTop',
   'paddingRight',
   'paddingBottom',
   'paddingLeft',
 
   // Border
-  'border', // TODO Polyfill
-  'borderWidth', // TODO Polyfill
+  'borderWidth',
   'borderColor',
-  'borderTop', // TODO Polyfill
+  'borderTop',
   'borderTopWidth',
   'borderTopColor',
-  'borderRight',
   'borderRightWidth',
   'borderRightColor',
-  'borderBottom',
   'borderBottomWidth',
   'borderBottomColor',
-  'borderLeft',
   'borderLeftWidth',
   'borderLeftColor',
-  'borderRadius', // TODO POlyfill
+  'borderRadius',
   'borderTopLeftRadius',
   'borderTopRightRadius',
   'borderBottomRightRadius',
   'borderBottomLeftRadius',
 
   // Margin
-  'margin', // TODO Polyfill
+  'margin',
+  'marginVertical',
+  'marginHorizontal',
   'marginTop',
   'marginRight',
   'marginBottom',
@@ -60,18 +59,16 @@ const _supportedProperties = [
 
   // Text
   'color',
-  'font', // TODO Polyfill
   'fontFamily',
   'fontSize',
   'fontStyle',
-  'fontWeight', // TODO Polyfill
+  'fontWeight',
   'lineHeight',
   'textAlign',
-  'textShadow', // TODO Polyfill
-  // These are polyfilled into textShadow
-  // 'textShadowColor', // native
-  // 'textShadowOffset', // native
-  // 'textShadowRadius', // native
+  // TODO Polyfill into text-shadow for web
+  'textShadowColor', // native
+  'textShadowOffset', // native
+  'textShadowRadius', // native
   'textAlignVertical', // android
   'letterSpacing', // ios
   'textDecorationColor', // ios
@@ -87,7 +84,7 @@ const _supportedProperties = [
   // Transform
   'transform', // TODO Polyfill, including transformMatrix
   // This is polyfilled into transform
-  // 'transformMatrix', //native
+  'transformMatrix', // native
   'backfaceVisibility',
 
   // Shadows
@@ -184,58 +181,48 @@ const _testsForWarnings = [
       `listStyle isn't supported in React Native, so Uranium automatically ` +
       `unstyles lists by setting listStyle: 'none'.`,
   },
-
-  // Notify of helpful polyfills for native-only properties
-
-  // paddingVertical and paddingHorizontal
+  // padding shorthand
   {
-    propertyMatches: property =>
-      property === 'paddingVertical' ||
-      property === 'paddingHorizontal',
-    message: () =>
-      `'paddingVertical' and 'paddingHorizontal' are polyfilled into 'padding', ` +
-      `so just use the 'padding' shorthand like you normally would in CSS.`,
+    propertyMatches: property => property === 'padding',
+    valueMatches: value => typeof value === 'string',
+    message: (property, value) =>
+      `Unsupported property value for 'padding' on \n` +
+      `${property}: '${value}'\n` +
+      `React Native expects 'padding' to be a number and not a string. ` +
+      `If you tried to use shorthand, use 'paddingHorizontal' and ` +
+      `'paddingVertical' instead.`,
   },
-  // marginVertical and marginHorizontal
+  // margin shorthand
   {
-    propertyMatches: property =>
-      property === 'marginVertical' ||
-      property === 'marginHorizontal',
-    message: () =>
-      `'marginVertical' and 'marginHorizontal' are polyfilled into 'margin', ` +
-      `so just use the 'margin' shorthand like you normally would in CSS.`,
+    propertyMatches: property => property === 'padding',
+    valueMatches: value => typeof value === 'string',
+    message: (property, value) =>
+      `Unsupported property value for 'margin' on \n` +
+      `${property}: '${value}'\n` +
+      `React Native expects 'margin' to be a number and not a string. ` +
+      `If you tried to use shorthand, use 'marginHorizontal' and ` +
+      `'marginVertical' instead.`,
   },
   // transformMatrix
   {
-    propertyMatches: property => property === 'transformMatrix',
-    message: () =>
-      `'transformMatrix' is polyfilled into 'transform', so just use 'transform' ` +
-      `as you normally would in CSS.`,
+    propertyMatches: property => property === 'transform',
+    valueMatches: value => value.indexOf('matrix') !== -1,
+    message: (property, value) =>
+      `Unsupported property value for 'transform' on \n` +
+      `${property}: '${value}'\n` +
+      `React Native uses the 'transformMatrix' style property ` +
+      `for matrix transforms.`,
   },
   // textShadowOffset, textShadowRadius, textShadowColor
   {
-    propertyMatches: property =>
-      property === 'textShadowOffset' ||
-      property === 'textShadowRadius' ||
-      property === 'textShadowColor',
+    propertyMatches: property => property === 'textShadow',
     message: () =>
-      `'textShadowOffset', 'textShadowRadius', and 'textShadowColor' are polyfilled ` +
-      `into 'textShadow', so just use 'textShadow' as you normally would in CSS.`,
+      `React Native uses 'textShadowOffset', 'textShadowRadius', and ` +
+      `'textShadowColor' instead of 'textShadow'.`,
   },
 
   // Values
 
-  // Only px
-  {
-    valueMatches: value =>
-      typeof value === 'string' &&
-      !isNaN(parseInt(value, 10)) &&
-      !value.match(/px/),
-    message: (property, value) =>
-      `Unsupported unit on \n` +
-      `${property}: '${value}'\n` +
-      `px is the only supported unit right now.`,
-  },
   // %
   {
     valueMatches: value =>
@@ -287,9 +274,7 @@ export default (element, forceUpdate, config) => {
   const { props } = element
   const { style } = props
 
-  // Ignore warnings if user sets universal to false in config, meaning
-  // they just want to use Uranium on the web
-  if (!config.universal) return element
+  if (config.webOnly) return element
 
   // Only warn the first time the element is processed
   if (props._alreadyWarned) return element

@@ -3,7 +3,7 @@ import { Component } from 'react'
 import resolveStyles from './resolve-styles'
 
 const defaultConfig = {
-  universal: true,
+  webOnly: false,
 }
 
 const enhancer = (config, component) => {
