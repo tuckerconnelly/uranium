@@ -17,14 +17,6 @@ const enhancer = (config, component) => {
     }
 
   class Uranium extends ComposedComponent {
-    constructor(props) {
-      super(props)
-
-      this.state = {
-        _styles: {},
-      }
-    }
-
     render() {
       return resolveStyles(super.render(), this.forceUpdate.bind(this), config)
     }
