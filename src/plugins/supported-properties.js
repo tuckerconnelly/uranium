@@ -20,6 +20,7 @@ const _supportedProperties = [
   'justifyContent',
 
   // Padding
+  'padding',
   'paddingHorizontal',
   'paddingVertical',
   'paddingTop',
@@ -124,7 +125,7 @@ const _testsForWarnings = [
     },
     message: (property, value) =>
       `Unsupported style property '${property}' on \n` +
-      `${property}: '${value}'`,
+      `${property}: ${value}`,
   },
   // display: 'flex'
   {
@@ -258,13 +259,17 @@ const _testStyles = (style, element) => {
 
     if (warningMessage === '') continue
 
+    const uraniumComponentName = element.__owner__ ?
+      element._owner._currentElement.type.displayName :
+      ''
+
     const elementName = element.key ?
       `${element.type}#${element.key}` :
       element.type
 
     /* eslint-disable no-console */
     console.error(
-      `${element._owner._currentElement.type.displayName} ${elementName} ${warningMessage}`
+      `${uraniumComponentName} ${elementName} ${warningMessage}`
     )
     /* eslint-enable no-console */
   }
