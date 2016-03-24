@@ -4,16 +4,11 @@ const mqls = new Map
 
 export default (element, forceUpdate) => {
   const { props } = element
-  const { style } = props
+  const { styles } = props
 
-  const transformedStyle = Object.keys(style).reduce(
-    (styleAccumulator, property) => {
-      if (!property.match(/@media/)) {
-        return {
-          ...styleAccumulator,
-          [property]: style[property],
-        }
-      }
+  const newStyles = Object.keys(styles).reduce(
+    (stylesAccumulator, property) => {
+      if (!property.match(/@media/)) return stylesAccumulator
 
       if (!mqls.get(property)) {
         mqls.set(property, window.matchMedia(property.split('@media ')[1]))
@@ -24,20 +19,18 @@ export default (element, forceUpdate) => {
 
       if (mqls.get(property).matches) {
         return {
-          ...styleAccumulator,
-          ...style[property],
+          ...stylesAccumulator,
+          ...styles[property],
         }
       }
 
-      return styleAccumulator
+      return stylesAccumulator
     },
     {}
   )
 
-  const newProps = {
-    ...props,
-    style: transformedStyle,
-  }
-
-  return React.cloneElement(element, newProps)
+  return React.cloneElement(
+    element,
+    { ...props, style: { ...props.style, ...newStyles } }
+  )
 }

@@ -51,8 +51,7 @@ const _resolveProps = (element, forceUpdate, config) => {
 const _runPlugins = (element, forceUpdate, config) => {
   if (
     !React.isValidElement(element) ||
-    typeof element.type !== 'string' ||
-    !element.props.style
+    !element.props.styles
   ) {
     return element
   }

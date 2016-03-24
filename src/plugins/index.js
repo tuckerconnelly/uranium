@@ -2,6 +2,7 @@ import mergeArray from './merge-array'
 import mediaQueries from './media-queries'
 import interactions from './interactions'
 import supportedProperties from './supported-properties'
+import copyStyles from './copy-styles'
 
 // Plugins follow this format:
 //
@@ -20,6 +21,7 @@ import supportedProperties from './supported-properties'
 // simple example using event listeners
 export default [
   mergeArray,
+  copyStyles,
   supportedProperties,
   mediaQueries,
   interactions,

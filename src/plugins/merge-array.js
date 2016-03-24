@@ -2,15 +2,15 @@ import React from 'react'
 
 export default element => {
   const { props } = element
-  const { style } = props
+  const { styles } = props
 
-  if (typeof style === 'object' && Array.isArray(style)) {
-    const newStyle = style.reduce(
-      (newStyle, currentStyle) => ({ ...newStyle, ...currentStyle }),
+  if (typeof style === 'object' && Array.isArray(styles)) {
+    const newStyles = styles.reduce(
+      (newStyles, currentStyle) => ({ ...newStyles, ...currentStyle }),
       {}
     )
 
-    return React.cloneElement(element, { ...props, style: newStyle })
+    return React.cloneElement(element, { ...props, styles: newStyles })
   }
 
   return element

@@ -1,14 +1,13 @@
 import React from 'react'
-import invariant from 'invariant'
-import { objectToMap } from 'map-set-utils'
+import warning from 'warning'
 
 // Style states
 
-const _styleStates = new Map
+const _styleStates = new Map()
 
 const _setStyleState = (elementKey, stateKey, value) => {
   if (_styleStates.get(elementKey) === undefined) {
-    _styleStates.set(elementKey, new Map)
+    _styleStates.set(elementKey, new Map())
   }
 
   _styleStates.get(elementKey).set(stateKey, value)
@@ -40,14 +39,14 @@ const _addGlobalMouseUpListener = forceUpdate => {
 
 const _makeSureItHasAKey = element => {
   const { props, key } = element
-  const { style } = props
-  const hasInteractionProperty = Object.keys(style).reduce((hasInteractionProperty, property) => {
+  const { styles } = props
+  const hasInteractionProperty = Object.keys(styles).reduce((hasInteractionProperty, property) => {
     if (property === ':hover' || property === ':active' || property === ':focus') return true
     return hasInteractionProperty
   }, false)
 
   if (hasInteractionProperty) {
-    invariant(key !== null,
+    warning(key !== null,
       'Elements using :hover, :active, or :focus styles must have a unique key property.'
     )
   }
@@ -66,11 +65,7 @@ const _injectIntoListener = (props, listener, method) => {
 }
 
 const _convertStylesToProperlyOrderedMap = styles => {
-  const stylesMap = objectToMap(styles)
-
-  stylesMap.delete(':focus')
-  stylesMap.delete(':hover')
-  stylesMap.delete(':active')
+  const stylesMap = new Map()
 
   styles[':focus'] !== undefined && stylesMap.set(':focus', styles[':focus'])
   styles[':hover'] !== undefined && stylesMap.set(':hover', styles[':hover'])
@@ -81,7 +76,7 @@ const _convertStylesToProperlyOrderedMap = styles => {
 
 export default (element, forceUpdate) => {
   const { props, key } = element
-  const { style } = props
+  const { styles } = props
 
   // mouseup needs to be global because if the user presses their
   // mouse down, moves pointer off of button, and THEN mouses up,
@@ -101,12 +96,11 @@ export default (element, forceUpdate) => {
   _makeSureItHasAKey(element)
 
   let newProps = { ...props }
-  let newStyles = {}
 
   // The order of properties in an object aren't guaranteed, so
   // we need to convert to a Map with the styles properly ordered.
   // We want focus to be applied first, then hover, then active.
-  const stylesMap = _convertStylesToProperlyOrderedMap(style)
+  const stylesMap = _convertStylesToProperlyOrderedMap(styles)
   for (const [property, value] of stylesMap) {
     if (property === ':focus') {
       newProps = _injectIntoListener(newProps, 'onFocus', () => {
@@ -118,7 +112,7 @@ export default (element, forceUpdate) => {
         forceUpdate()
       })
       if (!_getStyleState(key, ':focus')) continue
-      newStyles = { ...newStyles, ...value }
+      Object.assign(newProps.style, value)
       continue
     }
 
@@ -132,7 +126,7 @@ export default (element, forceUpdate) => {
         forceUpdate()
       })
       if (!_getStyleState(key, ':hover')) continue
-      newStyles = { ...newStyles, ...value }
+      Object.assign(newProps.style, value)
       continue
     }
 
@@ -152,14 +146,10 @@ export default (element, forceUpdate) => {
         forceUpdate()
       })
       if (!_getStyleState(key, ':active')) continue
-      newStyles = { ...newStyles, ...value }
+      Object.assign(newProps.style, value)
       continue
     }
-
-    newStyles = { ...newStyles, [property]: value }
   }
-
-  newProps.style = newStyles
 
   return React.cloneElement(element, newProps)
 }
