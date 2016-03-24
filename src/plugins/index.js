@@ -1,6 +1,5 @@
 import mergeArray from './merge-array'
 import mediaQueries from './media-queries'
-import interactions from './interactions'
 import copyStyles from './copy-styles'
 
 // Plugins follow this format:
@@ -22,5 +21,4 @@ export default [
   mergeArray,
   copyStyles,
   mediaQueries,
-  interactions,
 ]

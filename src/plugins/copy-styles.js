@@ -7,7 +7,6 @@ export default element => {
   const newStyle = Object.keys(styles).reduce(
     (styleAccumulator, currentProperty) => {
       if (
-        [':focus', ':hover', ':active'].indexOf(currentProperty) !== -1 ||
         currentProperty.match(/@media/)
       ) return styleAccumulator
 
