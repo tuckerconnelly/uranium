@@ -1,11 +1,12 @@
 {
   "name": "uranium",
   "version": "0.0.0",
-  "description": "Universal Radium.",
-  "main": "src/index.js",
+  "description": "Universal extension of React styles.",
+  "main": "lib/index.js",
   "scripts": {
     "prebuild": "rimraf lib",
-    "build": "babel ./src --out-dir ./lib",
+    "build": "babel -d lib src",
+    "build:watch": "babel -d lib src -w",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -15,7 +16,7 @@
   "homepage": "https://github.com/tuckerconnelly/uranium.git",
   "keywords": [
     "react",
-    "radium"
+    "uranium"
   ],
   "author": "Tucker Connelly <web@tuckerconnelly.com>",
   "license": "MIT",
@@ -35,12 +36,10 @@
     "webpack": "^1.12.14"
   },
   "peerDependencies": {
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react": "^0.14.7"
   },
   "dependencies": {
-    "invariant": "^2.2.0",
-    "map-set-utils": "0.0.4",
-    "warning": "^2.1.0"
+    "decamelize": "^1.2.0",
+    "jshashes": "^1.0.5"
   }
 }

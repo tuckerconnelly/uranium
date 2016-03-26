@@ -1,12 +1,10 @@
-import { Component } from 'react'
+import { Component, PropTypes } from 'react'
 
 import resolveStyles from './resolve-styles'
 
-const defaultConfig = {
-  webOnly: false,
-}
+export { default as UraniumProvider } from './provider'
 
-const enhancer = (config, component) => {
+export default component => {
   // Handle stateless functional components
   const ComposedComponent = (component.render || component.prototype.render) ?
     component :
@@ -18,7 +16,7 @@ const enhancer = (config, component) => {
 
   class Uranium extends ComposedComponent {
     render() {
-      return resolveStyles(super.render(), this.forceUpdate.bind(this), config)
+      return resolveStyles(super.render(), this.forceUpdate.bind(this), this.context.uraniumConfig)
     }
   }
 
@@ -29,13 +27,10 @@ const enhancer = (config, component) => {
     ')'
   /* eslint-enable prefer-template */
 
+  Uranium.contextTypes = {
+    ...Uranium.contextTypes,
+    uraniumConfig: PropTypes.object,
+  }
+
   return Uranium
-}
-
-// Support both Uranium(MyComponent) and Uranium({ config })(MyComponent)
-export default configOrComponent => {
-  if (typeof configOrComponent === 'function') return enhancer(defaultConfig, configOrComponent)
-
-  const newConfig = { ...defaultConfig, ...configOrComponent }
-  return enhancer.bind(null, newConfig)
 }

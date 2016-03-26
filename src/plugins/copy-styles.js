@@ -2,9 +2,9 @@ import React from 'react'
 
 export default element => {
   const { props } = element
-  const { style, styles } = props
+  const { style, css } = props
 
-  const newStyle = Object.keys(styles).reduce(
+  const newStyle = Object.keys(css).reduce(
     (styleAccumulator, currentProperty) => {
       if (
         currentProperty.match(/@media/)
@@ -12,7 +12,7 @@ export default element => {
 
       return {
         ...styleAccumulator,
-        [currentProperty]: styles[currentProperty],
+        [currentProperty]: css[currentProperty],
       }
     },
     style || {}
