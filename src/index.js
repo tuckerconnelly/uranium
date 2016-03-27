@@ -1,8 +1,8 @@
 import { Component, PropTypes } from 'react'
 
-import resolveStyles from './resolve-styles'
+import resolveStyles from './resolveStyles'
 
-export { default as UraniumProvider } from './provider'
+export { default as UraniumProvider } from './Provider'
 
 export default component => {
   // Handle stateless functional components

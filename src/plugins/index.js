@@ -1,6 +1,6 @@
-import mergeArray from './merge-array'
-import mediaQueries from './media-queries'
-import copyStyles from './copy-styles'
+import mergeArray from './mergeArray'
+import mediaQueries from './mediaQueries'
+import copyStyles from './copyStyles'
 
 // Plugins follow this format:
 //
