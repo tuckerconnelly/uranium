@@ -1,7 +1,7 @@
 import React from 'react'
 import Hashes from 'jshashes'
 
-import { expandStyle, createCSSDeclarations } from '../utils/expand-css'
+import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
 
 const mqls = new Map()
 
