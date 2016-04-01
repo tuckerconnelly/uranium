@@ -27,22 +27,22 @@ export default (element, forceUpdate, config) => {
 
     if (!mqs.length) return element
 
-    let childrenAsArray
+    let newChildren = React.createElement('style', { key: cssHash }, mqs)
 
     if (typeof props.children === 'function') {
-      childrenAsArray = [props.children()]
+      newChildren = [newChildren, props.children()]
     } else if (!Array.isArray(props.children)) {
-      childrenAsArray = [props.children]
+      newChildren = [newChildren, props.children]
     } else {
-      childrenAsArray = props.children
+      newChildren = props.children.concat([newChildren])
     }
 
     const newProps = {
       ...props,
-      className: props.className ? `${props.className} ${className}` : className,
-      children: childrenAsArray.concat([
-        React.createElement('style', { key: cssHash }, mqs),
-      ]),
+      className: props.className ?
+        [...new Set(props.className.split(' ').concat([className]))].join(' ') :
+        className,
+      children: newChildren,
     }
     return React.cloneElement(element, newProps)
   }
