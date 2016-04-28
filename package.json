@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "decamelize": "^1.2.0",
-    "jshashes": "^1.0.5"
+    "jshashes": "^1.0.5",
+    "lodash": "^4.11.1"
   }
 }

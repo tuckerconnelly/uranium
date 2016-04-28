@@ -1,3 +1,4 @@
+import { omit } from 'lodash'
 import React from 'react'
 
 import Plugins from './plugins'
@@ -29,7 +30,11 @@ const _resolveChildren = (element, forceUpdate, config) => {
     )
   }
 
-  return React.cloneElement(element, element.props, newChildren)
+  return React.cloneElement(
+    element,
+    omit(element.props, 'key', 'ref'),
+    newChildren
+  )
 }
 
 const _resolveProps = (element, forceUpdate, config) => {
@@ -45,7 +50,10 @@ const _resolveProps = (element, forceUpdate, config) => {
     { ...element.props }
   )
 
-  return React.cloneElement(element, newProps)
+  return React.cloneElement(
+    element,
+    omit(newProps, 'key', 'ref')
+  )
 }
 
 const _runPlugins = (element, forceUpdate, config) => {
