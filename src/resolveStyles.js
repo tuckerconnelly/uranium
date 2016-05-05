@@ -5,7 +5,7 @@ import Plugins from './plugins'
 
 let resolveStyles = component => component
 
-const _resolveChildren = (element, forceUpdate, config) => {
+const _resolveChildren = (element, forceUpdate) => {
   const { children } = element.props
   let newChildren
 
@@ -15,16 +15,16 @@ const _resolveChildren = (element, forceUpdate, config) => {
     newChildren = (...args) => {
       const result = children.apply(null, args)
       if (!React.isValidElement(result)) return result
-      return resolveStyles(result, forceUpdate, config)
+      return resolveStyles(result, forceUpdate)
     }
   } else if (React.Children.count(children) === 1 && children.type) {
     const onlyChild = React.Children.only(children)
-    newChildren = resolveStyles(onlyChild, forceUpdate, config)
+    newChildren = resolveStyles(onlyChild, forceUpdate)
   } else {
     newChildren = React.Children.map(
       children,
       child => {
-        if (React.isValidElement(child)) return resolveStyles(child, forceUpdate, config)
+        if (React.isValidElement(child)) return resolveStyles(child, forceUpdate)
         return child
       }
     )
@@ -37,14 +37,14 @@ const _resolveChildren = (element, forceUpdate, config) => {
   )
 }
 
-const _resolveProps = (element, forceUpdate, config) => {
+const _resolveProps = (element, forceUpdate) => {
   const newProps = Object.keys(element.props).reduce(
     (resolvedProps, prop) => {
       if (prop === 'children') return resolvedProps
       if (!React.isValidElement(element.props[prop])) return resolvedProps
       return {
         ...resolvedProps,
-        prop: resolveStyles(element.props[prop], forceUpdate, config),
+        prop: resolveStyles(element.props[prop], forceUpdate),
       }
     },
     { ...element.props }
@@ -56,7 +56,7 @@ const _resolveProps = (element, forceUpdate, config) => {
   )
 }
 
-const _runPlugins = (element, forceUpdate, config) => {
+const _runPlugins = (element, forceUpdate) => {
   if (
     !React.isValidElement(element) ||
     !element.props.css
@@ -65,18 +65,18 @@ const _runPlugins = (element, forceUpdate, config) => {
   }
 
   return Plugins.reduce(
-    (element, plugin) => plugin(element, forceUpdate, config),
+    (element, plugin) => plugin(element, forceUpdate),
     element
   )
 }
 
-resolveStyles = (element, forceUpdate, config) =>
+resolveStyles = (element, forceUpdate) =>
   [
     _resolveChildren,
     _resolveProps,
     _runPlugins,
   ].reduce(
-    (element, reducer) => reducer(element, forceUpdate, config),
+    (element, reducer) => reducer(element, forceUpdate),
     element
   )
 

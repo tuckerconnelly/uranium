@@ -6,7 +6,8 @@ export default element => {
 
   if (typeof css === 'object' && Array.isArray(css)) {
     const newCSS = css.reduce(
-      (cssAccumulator, currentStyle) => ({ ...cssAccumulator, ...currentStyle }),
+      (cssAccumulator, currentStyle) =>
+        currentStyle ? ({ ...cssAccumulator, ...currentStyle }) : cssAccumulator,
       {}
     )
 
