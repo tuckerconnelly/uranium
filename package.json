@@ -36,7 +36,7 @@
     "webpack": "^1.12.14"
   },
   "peerDependencies": {
-    "react": "^0.14.7"
+    "react": "^0.14.8"
   },
   "dependencies": {
     "decamelize": "^1.2.0",
