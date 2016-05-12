@@ -14,7 +14,6 @@ const unitlessNumbers = {
   flexNegative: true,
   fontWeight: true,
   lineClamp: true,
-  lineHeight: true,
   opacity: true,
   order: true,
   orphans: true,
@@ -68,12 +67,16 @@ const sortProps = (propsArray) => propsArray.sort((a, b) => {
   return a < b ? -1 : a > b ? 1 : 0 // eslint-disable-line no-nested-ternary
 })
 
+const removeUraniumSpecificProps = propsArray =>
+  propsArray.filter(prop => !prop.match(/@media/))
+
 /**
  * Expand the shorthand properties to isolate every declaration from the others.
  */
 export const expandStyle = style => {
   const propsArray = Object.keys(style)
-  const sortedProps = sortProps(propsArray)
+  const cleanProps = removeUraniumSpecificProps(propsArray)
+  const sortedProps = sortProps(cleanProps)
 
   return sortedProps.reduce((resolvedStyle, key) => {
     const expandedProps = styleShortHands[key]
@@ -101,5 +104,5 @@ export const createCSSDeclarations = (style) =>
   Object.keys(style).map((prop) => {
     const property = decamelize(prop, '-')
     const value = style[prop]
-    return `${property}:${value}!important;`
+    return `${property}:${value};`
   }).sort().join('')
