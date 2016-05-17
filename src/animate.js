@@ -15,15 +15,15 @@ function getPropValueGivenMediaQueries(styles, prop) {
 function animatedStyle(prop, from, to, on) {
   if (from === undefined) {
     throw new Error(
-      `Uranium.animate: the \`from\` style is undefined on the ` +
-      `\`${prop}\` prop`
+      `Uranium.animate: the \`from\` style was undefined when ` +
+      `trying to animate the \`${prop}\` prop`
     )
   }
 
   if (to === undefined) {
     throw new Error(
-      `Uranium.animate: the \`to\` style is undefined on the ` +
-      `\`${prop}\` prop`
+      `Uranium.animate: the \`to\` style was undefined when ` +
+      `trying to animate the \`${prop}\` prop`
     )
   }
   // Check if the prop is set on both `from` and `to`
