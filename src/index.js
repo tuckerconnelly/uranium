@@ -2,6 +2,8 @@ import { Component } from 'react'
 
 import resolveStyles from './resolveStyles'
 
+export { default as animate } from './animate'
+
 export default component => {
   // Handle stateless functional components
   const ComposedComponent = (component.render || component.prototype.render) ?
