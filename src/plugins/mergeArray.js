@@ -5,7 +5,7 @@ function reduceStyle(style) {
   if (!Array.isArray(style)) return style
   return style.reduce(
     (styleAccumulator, currentStyle) =>
-      currentStyle ? ({ ...styleAccumulator, ...currentStyle }) : styleAccumulator,
+      currentStyle ? ({ ...styleAccumulator, ...reduceStyle(currentStyle) }) : styleAccumulator,
     {}
   )
 }
