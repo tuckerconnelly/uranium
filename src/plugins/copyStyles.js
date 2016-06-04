@@ -14,11 +14,11 @@ export default element => {
   // with it
   if (Platform.OS !== 'web') {
     let newStyle = Object.keys(css).reduce(
-      (styleAccumulator, currentProperty) => {
-        if (currentProperty.match(/@media/)) return styleAccumulator
+      (styleAccumulator, property) => {
+        if (property.match(/@media/)) return styleAccumulator
         return {
           ...styleAccumulator,
-          [currentProperty]: css[currentProperty],
+          [property]: css[property],
         }
       },
       {}
@@ -31,7 +31,14 @@ export default element => {
   // If we're on web, though, copy the css into a stylesheet
   const className = makeClassName(css)
 
-  const cssDeclarations = createCSSDeclarations(expandStyle(css))
+
+  // Weed out properties that were explicitly set to null
+  const cssWithoutNullValues = !style ? css : Object.keys(css).reduce((accumulator, property) => {
+    if (style[property] === null) return accumulator
+    return { ...accumulator, [property]: css[property] }
+  }, {})
+
+  const cssDeclarations = createCSSDeclarations(expandStyle(cssWithoutNullValues))
 
   let newChildren = React.createElement(
     'style',
