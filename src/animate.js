@@ -3,7 +3,7 @@ import matchMedia from 'react-native-match-media'
 function getPropValueGivenMediaQueries(styles, prop) {
   let finalValue = styles[prop]
   for (const mq in styles) {
-    if (!{}.hasOwnProperty.call(mq, styles)) continue
+    if (!{}.hasOwnProperty.call(styles, mq)) continue
     if (!mq.match(/media/)) continue
     if (!styles[mq][prop]) continue
     if (matchMedia(mq.split('@media ')[1]).matches) finalValue = styles[mq][prop]
