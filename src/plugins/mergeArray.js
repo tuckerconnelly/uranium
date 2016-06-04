@@ -13,8 +13,7 @@ function reduceStyle(style) {
 export default element => {
   const { props } = element
   const { css, style } = props
-  if (typeof css !== 'object' || !Array.isArray(css)) return element
-
+  
   const newCSS = reduceStyle(css)
   const newStyle = reduceStyle(style)
 
