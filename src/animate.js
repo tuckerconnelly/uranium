@@ -1,6 +1,9 @@
 import matchMedia from 'react-native-match-media'
 
 function getPropValueGivenMediaQueries(styles, prop) {
+  // Accept numbers as from/to
+  if (typeof styles === 'number') return styles
+
   let finalValue = styles[prop]
   for (const mq in styles) {
     if (!{}.hasOwnProperty.call(styles, mq)) continue
@@ -27,7 +30,10 @@ function animatedStyle(prop, from, to, on) {
     )
   }
   // Check if the prop is set on both `from` and `to`
-  if (from[prop] === undefined || to[prop] === undefined) {
+  if (
+    (typeof from === 'object' && typeof to === 'object') &&
+    (from[prop] === undefined || to[prop] === undefined)
+  ) {
     console.warn( // eslint-disable-line no-console
       `Uranium.animate: Tried to animate on a prop that wasn't ` +
       `present on both styles. Prop: ${prop}`
