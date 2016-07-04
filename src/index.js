@@ -1,6 +1,11 @@
 import { Component } from 'react'
+import { DOMProperty } from 'react/lib/ReactInjection'
 
 import resolveStyles from './resolveStyles'
+
+DOMProperty.injectDOMPropertyConfig({
+  isCustomAttribute: attributeName => attributeName === 'css',
+})
 
 export { default as animate } from './animate'
 
