@@ -37,6 +37,21 @@ function animatedStyle(prop, from, to, on) {
   ) {
     return { [prop]: from[prop] }
   }
+
+  // This is clever--re-using the animate() function to deal with the transform array
+  if (prop === 'transform') {
+    // Convert transform into a "style" object
+    const fromTransform = from.transform.reduce((prev, curr) => ({ ...prev, ...curr }), {})
+    const toTransform = to.transform.reduce((prev, curr) => ({ ...prev, ...curr }), {})
+
+    // animate() them like regular styles
+    const animdTransforms = animate(fromTransform, toTransform, on) // eslint-disable-line no-use-before-define, max-len
+
+    // Convert them back into the usual transform array
+    return {
+      transform: Object.keys(animdTransforms)
+        .map(transform => ({ [transform]: animdTransforms[transform] })),
+    }
   }
 
   return {
