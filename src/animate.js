@@ -1,4 +1,5 @@
 import matchMedia from 'react-native-match-media'
+import unionWith from 'lodash/unionWith'
 
 function getPropValueGivenMediaQueries(styles, prop) {
   // Accept numbers as from/to
@@ -34,11 +35,8 @@ function animatedStyle(prop, from, to, on) {
     (typeof from === 'object' && typeof to === 'object') &&
     (from[prop] === undefined || to[prop] === undefined)
   ) {
-    console.warn( // eslint-disable-line no-console
-      `Uranium.animate: Tried to animate on a prop that wasn't ` +
-      `present on both styles. Prop: ${prop}`
-    )
-    return {}
+    return { [prop]: from[prop] }
+  }
   }
 
   return {
@@ -54,9 +52,24 @@ function animatedStyle(prop, from, to, on) {
 
 // Wrapper to accept an array of props
 export default function animate(props, from, to, on) {
-  if (!Array.isArray(props)) return animatedStyle(props, from, to, on)
+  // Handle animate(prop, from, to, on) signature
+  if (typeof props === 'string') return animatedStyle(props, from, to, on)
+  // Handle the animate(props[], from, to, on) signature
+  if (Array.isArray(props)) {
+    return props
+      .map(prop => animatedStyle(prop, from, to, on))
+      .reduce(
+        (allStyles, currentStyle) => ({ ...allStyles, ...currentStyle }), {}
+      )
+  }
 
-  return props
+  // Handle animate(from, to, on) signature
+  /* eslint-disable no-param-reassign */
+  on = to
+  to = from
+  from = props
+  /* eslint-enable no-param-reassign */
+  return Object.keys(from)
     .map(prop => animatedStyle(prop, from, to, on))
     .reduce(
       (allStyles, currentStyle) => ({ ...allStyles, ...currentStyle }), {}
