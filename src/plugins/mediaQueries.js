@@ -1,7 +1,7 @@
 import React from 'react'
 import { Platform } from 'react-native-universal'
-import matchMedia from 'react-native-match-media'
 
+import { URANIUM_CLASSNAME } from './copyStyles'
 import makeClassName from '../utils/makeClassName'
 import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
 
@@ -17,7 +17,7 @@ export default (element, forceUpdate) => {
         if (!property.match(/@media/)) return styleAccumulator
 
         if (!mqls.get(property)) {
-          mqls.set(property, matchMedia(property.split('@media ')[1]))
+          mqls.set(property, global.matchMedia(property.split('@media ')[1]))
           mqls.get(property).addListener(() => forceUpdate())
         }
 
@@ -43,7 +43,7 @@ export default (element, forceUpdate) => {
   const mqs = Object.keys(css).reduce(
     (cssAccumulator, property) => {
       if (!property.match(/@media/)) return cssAccumulator
-      return `${cssAccumulator}${property}{.${className}{${
+      return `${cssAccumulator}${property}{.${URANIUM_CLASSNAME}.${className}{${
         createCSSDeclarations(expandStyle(css[property]))
       }}}`
     },

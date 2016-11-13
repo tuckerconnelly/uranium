@@ -1,4 +1,3 @@
-import matchMedia from 'react-native-match-media'
 import unionWith from 'lodash/unionWith'
 
 function getPropValueGivenMediaQueries(styles, prop) {
@@ -10,7 +9,7 @@ function getPropValueGivenMediaQueries(styles, prop) {
     if (!{}.hasOwnProperty.call(styles, mq)) continue
     if (!mq.match(/media/)) continue
     if (!styles[mq][prop]) continue
-    if (matchMedia(mq.split('@media ')[1]).matches) finalValue = styles[mq][prop]
+    if (global.matchMedia(mq.split('@media ')[1]).matches) finalValue = styles[mq][prop]
   }
   return finalValue
 }

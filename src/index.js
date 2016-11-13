@@ -8,6 +8,7 @@ DOMProperty.injectDOMPropertyConfig({
 })
 
 export { default as animate } from './animate'
+export { default as matchMediaMock } from './matchMediaMock'
 
 export default component => {
   // Handle stateless functional components
