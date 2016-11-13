@@ -4,6 +4,8 @@ import { Platform } from 'react-native-universal'
 import makeClassName from '../utils/makeClassName'
 import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
 
+export const URANIUM_CLASSNAME = 'ur'
+
 // This plugin assumes its the first plugin run, and makes the
 // style tag the rest of the plugins will use
 export default element => {
@@ -43,7 +45,7 @@ export default element => {
   let newChildren = React.createElement(
     'style',
     { key: className },
-    `.${className}{${cssDeclarations}}`
+    `.${URANIUM_CLASSNAME}.${className}{${cssDeclarations}}`
   )
 
   if (typeof props.children === 'function') {
@@ -57,8 +59,8 @@ export default element => {
   const newProps = {
     ...props,
     className: props.className ?
-      [...new Set(props.className.split(' ').concat([className]))].join(' ') :
-      className,
+      [...new Set(props.className.split(' ').concat([URANIUM_CLASSNAME, className]))].join(' ') :
+      `${URANIUM_CLASSNAME} ${className}`,
     children: newChildren,
   }
   return React.cloneElement(element, newProps)
