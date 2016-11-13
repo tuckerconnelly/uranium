@@ -31,7 +31,7 @@ Also works with android and server-side rendering
 - Make sure `global.matchMedia` is set in index.ios.js
 
 ```
-npm -S i uranium
+npm -S i tuckerconnelly/uranium
 ```
 
 ## Usage
