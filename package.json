@@ -1,6 +1,6 @@
 {
   "name": "uranium",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Universal extension of React styles.",
   "main": "lib/index.js",
   "scripts": {
