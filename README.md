@@ -25,10 +25,11 @@ iOS | Web
 
 Also works with android and server-side rendering
 
+This can be used with [react-native-web](https://github.com/necolas/react-native-web) and [react-native-universal](https://github.com/tuckerconnelly/react-native-universal) for a basic write-once, run-anywhere React Native app.
+
 ## Installation
 
-- Install  [react-native-match-media](https://github.com/tuckerconnelly/react-native-match-media)
-- Make sure `global.matchMedia` is set in index.ios.js
+If using in React Native, install  [react-native-match-media](https://github.com/tuckerconnelly/react-native-match-media)
 
 ```
 npm -S i tuckerconnelly/uranium
@@ -36,7 +37,7 @@ npm -S i tuckerconnelly/uranium
 
 ## Usage
 
-Use the CSS property to add Uranium styles.
+Use the `css` property to add Uranium styles.
 
 ```js
 import React, { PropTypes } from 'react'
