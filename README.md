@@ -1,10 +1,38 @@
 Uranium
 ==========
-Adds universal media-query support to css-in-js for both React and React Native
+Adds media-query support to css-in-js in React Native *and* React.
 
-## Motive
+```js
 
-React Native doesn't have an easy, idiomatic way to change styles based on the screen size. [Radium]() is awesome, but it only works for web. This is Universal Radium, or Uranium ;)
+export default () => <View css={styles.base} />
+
+const styles = {
+  base: {
+    height: 120,
+  },
+
+  '@media (min-width: 600px)': {
+    base: {
+      height: 56,
+    },
+  },
+}
+```
+
+iOS | Web
+:---:|:---:
+!![iOS Uranium Example](https://media.giphy.com/media/l3vRgLQX10iWWAJTW/giphy.gif)  |  ![web Uranium example](https://media.giphy.com/media/3o7TKtmlPcvc2xdj3i/giphy.gif)
+
+Also works with android and server-side rendering
+
+## Installation
+
+- Install  [react-native-match-media](https://github.com/tuckerconnelly/react-native-match-media)
+- Make sure `global.matchMedia` is set in index.ios.js
+
+```
+npm -S i uranium
+```
 
 ## Usage
 
@@ -30,13 +58,112 @@ const styles = {
     backgroundColor: 'red',
 
     '@media (min-width: 480px)': {
-      backgroundColor: 'blue'
+      backgroundColor: 'blue',
     }
   },
 }
+```
+
+## animate() function
+
+Uranium adds the `animate()` function to make animations simple in React Native simple, and to take into account the current screen size/media query when animating.
+
+It supports the following signatures:
+
+```js
+animate(from: Object, to: Object, on: Animated.AnimatedValue)
+animate(props: Array<string>, from: Object, to: Object, on: Animated.AnimatedValue)
+animate(prop: string, from: number, to: number, on: AnimatedValue)
+```
+
+It expects the `AnimatedValue` to animate from 0 to 1.
+
+Here it is used in a component:
+
+```js
+import React from 'react'
+import { View, Animated } from 'react-native'
+import Uranium, { animate } from 'uranium'
+
+class ExpandOnPress extends Component {
+  state = { expanded: false }
+
+  _expandAV = new Animated.Value(0)
+
+  _toggleExpanded() {
+    Animated.timing(this._expandAV, {
+      toValue: this.state.expanded ? 0 : 1,
+      duration: 300,
+    })
+
+    this.setState({ expanded: !this.state.expanded })
+  }
+
+  render() {
+    return (
+      <View
+        css={[
+          styles.base,
+          animate(styles.notExpanded, styles.expanded, this._expandAV),
+          animate('opacity', 0.25, 1, this._expandAV)
+        ]}
+        onPress={this._toggleExpanded} />
+    )
+  }
+}
+
+export default Uranium(ExpandOnClick)
+
+const styles = {
+  base: {
+    backgroundColor: 'blue',
+  },
+
+  notExpanded: {
+    width: 20,
+    height: 20,
+  },
+
+  expanded: {
+    width: 40,
+    height: 40,
+  }
+}
 
 ```
-On web, this will get copied to its own "scoped" <style> tag, so it works perfectly with server-side rendering. On iOS and Android, the media query styles will get copied into the style prop if they match.
+
+This will animate all the styles on `styles.notExpanded` to all the styles on `styles.expanded` on the `_expandAV` AnimatedValue. So `width` will animate from 20 to 40, and `height` will also animate from 20 to 40.
+
+This also animates opacity from '0.25' to '1'.
+
+If `styles.notExpanded` contained a property you didn't want to animate, like `borderRadius`, you could have specified specific values to animate:
+
+```
+animate(['width', 'height'], styles.notExpanded, styles.expanded, this._expandAV)
+
+...
+
+styles = {
+  notExpanded: {
+    width: 20,
+    height: 20,
+    borderRadius: 2,
+  },
+
+  expanded: {
+    width: 40,
+    height: 40,
+  }
+}
+```
+
+Note! The `AnimatedValue` must go from `0` to `1` (and vice versa).
+
+## Inspiration
+
+Many thanks to the creators of [Radium](https://github.com/FormidableLabs/radium) who inspired this library.
+
+In fact, the name is a play on Radium: Universal Radium = Uranium :)
 
 ## License
 MIT
