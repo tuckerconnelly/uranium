@@ -21,7 +21,7 @@ const styles = {
 
 iOS | Web
 :---:|:---:
-!![iOS Uranium Example](https://media.giphy.com/media/l3vRgLQX10iWWAJTW/giphy.gif)  |  ![web Uranium example](https://media.giphy.com/media/3o7TKtmlPcvc2xdj3i/giphy.gif)
+![iOS Uranium Example](https://media.giphy.com/media/l3vRgLQX10iWWAJTW/giphy.gif)  |  ![web Uranium example](https://media.giphy.com/media/3o7TKtmlPcvc2xdj3i/giphy.gif)
 
 Also works with android and server-side rendering
 
@@ -31,13 +31,17 @@ This can be used with [react-native-web](https://github.com/necolas/react-native
 
 If using in React Native, install  [react-native-match-media](https://github.com/tuckerconnelly/react-native-match-media)
 
+Then:
+
 ```
 npm -S i tuckerconnelly/uranium
 ```
 
 ## Usage
 
-Use the `css` property to add Uranium styles.
+Use the `css` property to add styles with media queries.
+
+Then wrap your component in `Uranium`
 
 ```js
 import React, { PropTypes } from 'react'
@@ -67,7 +71,7 @@ const styles = {
 
 ## animate() function
 
-Uranium adds the `animate()` function to make animations simple in React Native simple, and to take into account the current screen size/media query when animating.
+Uranium adds the `animate()` function to make animations simple in React Native, and to take into account the current screen size/media query when animating.
 
 It supports the following signatures:
 
@@ -133,7 +137,9 @@ const styles = {
 
 ```
 
-This will animate all the styles on `styles.notExpanded` to all the styles on `styles.expanded` on the `_expandAV` AnimatedValue. So `width` will animate from 20 to 40, and `height` will also animate from 20 to 40.
+This will animate all the styles on `styles.notExpanded` to all the styles on `styles.expanded` on the `_expandAV` AnimatedValue.
+
+So `width` will animate from 20 to 40, and `height` will also animate from 20 to 40.
 
 This also animates opacity from '0.25' to '1'.
 
