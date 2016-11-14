@@ -1,8 +1,11 @@
 import unionWith from 'lodash/unionWith'
 
 function getPropValueGivenMediaQueries(styles, prop) {
-  // Accept numbers as from/to
-  if (typeof styles === 'number') return styles
+  // Accept numbers and strings as from/to
+  if (
+    typeof styles === 'number' ||
+    typeof styles === 'string'
+  ) return styles
 
   let finalValue = styles[prop]
   for (const mq in styles) {
