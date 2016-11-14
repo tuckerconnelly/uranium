@@ -70,6 +70,11 @@ const sortProps = (propsArray) => propsArray.sort((a, b) => {
 const removeUraniumSpecificProps = propsArray =>
   propsArray.filter(prop => !prop.match(/@media/))
 
+const evaluateIfAnimatedValue = (key, value) => {
+  if (typeof value !== 'object' || !value.__getValue) return value
+  return value.__getValue()
+}
+
 /**
  * Expand the shorthand properties to isolate every declaration from the others.
  */
@@ -80,7 +85,11 @@ export const expandStyle = style => {
 
   return sortedProps.reduce((resolvedStyle, key) => {
     const expandedProps = styleShortHands[key]
-    const value = normalizeValue(key, style[key])
+    // Evaluate animated values to get a good starting value
+    // AnimatedValues are picked out and applied to the styles object anyways
+    // But a good starting value gets this working with SSR
+    const evaluatedAnimatedValue = evaluateIfAnimatedValue(key, style[key])
+    const value = normalizeValue(key, evaluatedAnimatedValue)
 
     // React Native treats `flex:1` like `flex:1 1 auto`
     if (key === 'flex') {

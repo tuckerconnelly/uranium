@@ -30,9 +30,17 @@ export default element => {
     return React.cloneElement(element, { ...props, style: newStyle })
   }
 
-  // If we're on web, though, copy the css into a stylesheet
-  const className = makeClassName(css)
+  // If on web
 
+  // Get animated values so we can pass them to the `style` prop instead of
+  // trying to put them in the <style> tag
+  const animatedValues = Object.keys(css).reduce((prev, curr) => {
+    if (typeof css[curr] !== 'object' || !css[curr].__getValue) return prev
+    return { ...prev, [curr]: css[curr] }
+  }, {})
+
+  // Copy the css into a stylesheet
+  const className = makeClassName(css)
 
   // Weed out properties that were explicitly set to null
   const cssWithoutNullValues = !style ? css : Object.keys(css).reduce((accumulator, property) => {
@@ -61,6 +69,7 @@ export default element => {
     className: props.className ?
       [...new Set(props.className.split(' ').concat([URANIUM_CLASSNAME, className]))].join(' ') :
       `${URANIUM_CLASSNAME} ${className}`,
+    style: { ...props.style, ...animatedValues },
     children: newChildren,
   }
   return React.cloneElement(element, newProps)
