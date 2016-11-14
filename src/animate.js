@@ -32,6 +32,7 @@ function animatedStyle(prop, from, to, on) {
       `trying to animate the \`${prop}\` prop`
     )
   }
+
   // Check if the prop is set on both `from` and `to`
   if (
     (typeof from === 'object' && typeof to === 'object') &&
@@ -87,6 +88,7 @@ export default function animate(props, from, to, on) {
   from = props
   /* eslint-enable no-param-reassign */
   return Object.keys(from)
+    .filter(prop => !prop.match(/media/))
     .map(prop => animatedStyle(prop, from, to, on))
     .reduce(
       (allStyles, currentStyle) => ({ ...allStyles, ...currentStyle }), {}
