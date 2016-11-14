@@ -9,10 +9,8 @@ export default () => <View css={styles.base} />
 const styles = {
   base: {
     height: 120,
-  },
 
-  '@media (min-width: 600px)': {
-    base: {
+    '@media (min-width: 600px)': {
       height: 56,
     },
   },
@@ -30,6 +28,15 @@ This can be used with [react-native-web](https://github.com/necolas/react-native
 ## Installation
 
 If using in React Native, install  [react-native-match-media](https://github.com/tuckerconnelly/react-native-match-media)
+
+Make sure `global.matchMedia` is set:
+
+```js
+import matchMedia from 'react-native-match-media'
+
+// Only for native, will already be set on web
+global.matchMedia = matchMedia
+```
 
 Then:
 
