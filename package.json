@@ -33,7 +33,7 @@
     "eslint-plugin-react": "^6.2.0"
   },
   "peerDependencies": {
-    "react": ""
+    "react": ">=15.3.2"
   },
   "dependencies": {
     "decamelize": "^1.2.0",
