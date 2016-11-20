@@ -41,14 +41,6 @@ function animatedStyle(prop, from, to, on) {
     return { [prop]: from[prop] }
   }
 
-  // Handle nested values (like iOS's shadowOffset)
-  // NOTE Not currently supported in React Native, submitted a PR:
-  // https://github.com/facebook/react-native/pull/11030
-  if (typeof from[prop] === 'object') {
-    return {}
-    // return { [prop]: animate(from[prop], to[prop], on) } // eslint-disable-line no-use-before-define
-  }
-
   // This is clever--re-using the animate() function to deal with the transform array
   if (prop === 'transform') {
     // Convert transform into a "style" object
@@ -63,6 +55,14 @@ function animatedStyle(prop, from, to, on) {
       transform: Object.keys(animdTransforms)
         .map(transform => ({ [transform]: animdTransforms[transform] })),
     }
+  }
+
+  // Handle nested values (like iOS's shadowOffset)
+  // NOTE Not currently supported in React Native, submitted a PR:
+  // https://github.com/facebook/react-native/pull/11030
+  if (typeof from[prop] === 'object') {
+    return {}
+    // return { [prop]: animate(from[prop], to[prop], on) } // eslint-disable-line no-use-before-define
   }
 
   return {
