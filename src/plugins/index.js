@@ -1,6 +1,6 @@
 import mergeArray from './mergeArray'
-import mediaQueries from './mediaQueries'
 import copyStyles from './copyStyles'
+import mediaQueries from './mediaQueries'
 
 // Plugins follow this format:
 //
