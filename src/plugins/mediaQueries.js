@@ -1,11 +1,13 @@
 import React from 'react'
-import { Platform } from 'react-native-universal'
 
 import { URANIUM_CLASSNAME } from './copyStyles'
 import makeClassName from '../utils/makeClassName'
 import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
+import isWeb from '../utils/isWeb'
 
 const mqls = new Map()
+
+console.log(isWeb())
 
 export default (element, forceUpdate) => {
   const { props } = element
@@ -13,7 +15,7 @@ export default (element, forceUpdate) => {
 
   const className = makeClassName(css)
 
-  if (Platform.OS !== 'web') {
+  if (!isWeb()) {
     const newStyle = Object.keys(css).reduce(
       (styleAccumulator, property) => {
         if (!property.match(/@media/)) return styleAccumulator

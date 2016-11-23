@@ -1,8 +1,8 @@
 import React from 'react'
-import { Platform } from 'react-native-universal'
 
 import makeClassName from '../utils/makeClassName'
 import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
+import isWeb from '../utils/isWeb'
 
 export const URANIUM_CLASSNAME = 'ur'
 
@@ -14,7 +14,7 @@ export default element => {
 
   // If we're on a native platform, copy css to style and be done
   // with it
-  if (Platform.OS !== 'web') {
+  if (!isWeb()) {
     let newStyle = Object.keys(css).reduce(
       (styleAccumulator, property) => {
         if (property.match(/@media/)) return styleAccumulator
