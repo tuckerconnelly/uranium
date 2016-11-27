@@ -7,8 +7,6 @@ import isWeb from '../utils/isWeb'
 
 const mqls = new Map()
 
-console.log(isWeb())
-
 export default (element, forceUpdate) => {
   const { props } = element
   const { css } = props
