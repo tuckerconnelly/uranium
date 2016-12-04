@@ -1,5 +1,7 @@
 import { Component } from 'react'
-import { DOMProperty } from 'react/lib/ReactInjection'
+// HACK Temporary peer dep on react-dom to inject properties
+// Will be removed when react 16 comes out.
+import { DOMProperty } from 'react-dom/lib/ReactInjection'
 
 import resolveStyles from './resolveStyles'
 
