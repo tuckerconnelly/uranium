@@ -1,5 +1,3 @@
-import unionWith from 'lodash/unionWith'
-
 function getPropValueGivenMediaQueries(styles, prop) {
   // Accept numbers and strings as from/to
   if (
