@@ -2,7 +2,7 @@ import React from 'react'
 
 import makeClassName from '../utils/makeClassName'
 import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
-import isWeb from '../utils/isWeb'
+import isWeb, { isWebVoidElement } from '../utils/isWeb'
 
 export const URANIUM_CLASSNAME = 'ur'
 
@@ -14,7 +14,7 @@ export default element => {
 
   // If we're on a native platform, copy css to style and be done
   // with it
-  if (!isWeb()) {
+  if (!isWeb() || isWebVoidElement(element)) {
     let newStyle = Object.keys(css).reduce(
       (styleAccumulator, property) => {
         if (property.match(/@media/)) return styleAccumulator

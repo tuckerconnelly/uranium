@@ -3,7 +3,7 @@ import React from 'react'
 import { URANIUM_CLASSNAME } from './copyStyles'
 import makeClassName from '../utils/makeClassName'
 import { expandStyle, createCSSDeclarations } from '../utils/expandCSS'
-import isWeb from '../utils/isWeb'
+import isWeb, { isWebVoidElement } from '../utils/isWeb'
 
 const mqls = new Map()
 
@@ -13,7 +13,7 @@ export default (element, forceUpdate) => {
 
   const className = makeClassName(css)
 
-  if (!isWeb()) {
+  if (!isWeb() || isWebVoidElement(element)) {
     const newStyle = Object.keys(css).reduce(
       (styleAccumulator, property) => {
         if (!property.match(/@media/)) return styleAccumulator

@@ -24,7 +24,10 @@ export default component => {
     }
 
   class Uranium extends ComposedComponent {
-    componentWillUnmount() { this._unmounted = true }
+    componentWillUnmount() {
+      if (super.componentWillUnmount) super.componentWillUnmount()
+      this._unmounted = true
+    }
     _protectedForceUpdate = () => !this._unmounted && this.forceUpdate()
 
     render() {
