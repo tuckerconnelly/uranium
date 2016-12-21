@@ -41,7 +41,7 @@ global.matchMedia = matchMedia
 Then:
 
 ```
-npm -S i tuckerconnelly/uranium
+npm -S i tuckerconnelly/uranium#0.2
 ```
 
 ### Usage
