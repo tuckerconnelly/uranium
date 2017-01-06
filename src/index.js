@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { DOMProperty } from 'react/lib/ReactInjection'
+import { DOMProperty } from 'react-dom/lib/ReactInjection'
 
 import matchMediaMock from './matchMediaMock'
 import resolveStyles from './resolveStyles'
