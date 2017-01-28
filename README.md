@@ -23,7 +23,7 @@ iOS | Web
 
 Also works with android and server-side rendering
 
-This can be used with [tuckerconnelly/react-native-web](https://github.com/tuckerconnelly/react-native-web) and [react-native-universal](https://github.com/tuckerconnelly/react-native-universal) for a basic write-once, run-anywhere React Native app.
+This can be used with [react-native-web](https://github.com/necolas/react-native-web) for a basic write-once, run-anywhere React Native app.
 
 ### Installation
 
@@ -41,7 +41,7 @@ global.matchMedia = matchMedia
 Then:
 
 ```
-npm -S i tuckerconnelly/uranium#0.2
+npm -S i tuckerconnelly/uranium
 ```
 
 ### Usage
@@ -52,7 +52,7 @@ Then wrap your component in `Uranium`
 
 ```js
 import React, { PropTypes } from 'react'
-import { View } from 'react-native-universal'
+import { View } from 'react-native'
 import Uranium from 'uranium'
 
 import Shadows from './styles/Shadows'
