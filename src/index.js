@@ -1,15 +1,10 @@
 import { Component } from 'react'
-import { DOMProperty } from 'react-dom/lib/ReactInjection'
 
 import matchMediaMock from './matchMediaMock'
 import resolveStyles from './resolveStyles'
 
-DOMProperty.injectDOMPropertyConfig({
-  isCustomAttribute: attributeName => attributeName === 'css',
-})
-
 if (!global.matchMedia) {
-  global.matchMedia = matchMediaMock
+  global.matchMedia = matchMediaMock;
 
   if (!global.__exponent) {
     console.warn( // eslint-disable-line no-console
