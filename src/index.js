@@ -26,6 +26,7 @@ export default component => {
     class extends Component {
       static propTypes = component.propTypes;
       static defaultProps = component.defaultProps;
+      static displayName = component.displayName;
 
       render() {
         return component(this.props)
