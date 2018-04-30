@@ -28,7 +28,7 @@ export default component => {
       static defaultProps = component.defaultProps;
 
       render() {
-        return component(this.props)
+        return new component(this.props)
       }
     }
 
